@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Universidad Personal</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: #0d0d0d;
+      color: #e8e8e8;
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+
+    /* ── Header ── */
+    header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid #2a2a2a;
+    }
+
+    header h1 {
+      font-size: 2.4rem;
+      font-weight: 700;
+      color: #d4af37;
+      letter-spacing: 1px;
+    }
+
+    header .date {
+      color: #888;
+      font-size: 0.95rem;
+      margin-top: 0.3rem;
+    }
+
+    header .tagline {
+      color: #c9a84c;
+      font-style: italic;
+      margin-top: 0.6rem;
+      font-size: 0.9rem;
+      opacity: 0.85;
+    }
+
+    /* ── Cita motivacional ── */
+    .quote-banner {
+      background: linear-gradient(135deg, #1a1a1a 0%, #1e1e1e 100%);
+      border-left: 4px solid #d4af37;
+      border-radius: 8px;
+      padding: 1.2rem 1.5rem;
+      margin-bottom: 2.5rem;
+      position: relative;
+    }
+
+    .quote-banner::before {
+      content: '"';
+      position: absolute;
+      top: -0.2rem;
+      left: 0.8rem;
+      font-size: 3rem;
+      color: #d4af37;
+      opacity: 0.3;
+      font-family: Georgia, serif;
+    }
+
+    .quote-banner p {
+      padding-left: 1.5rem;
+      font-style: italic;
+      color: #ccc;
+      font-size: 1.05rem;
+    }
+
+    .quote-banner .quote-author {
+      padding-left: 1.5rem;
+      color: #888;
+      font-size: 0.85rem;
+      margin-top: 0.4rem;
+      font-style: normal;
+    }
+
+    /* ── Sección títulos ── */
+    .section-title {
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #d4af37;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* ── Tareas del día ── */
+    .tasks-section {
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .task-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.7rem 0;
+      border-bottom: 1px solid #222;
+    }
+
+    .task-item:last-child { border-bottom: none; }
+
+    .task-item input[type="checkbox"] {
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border: 2px solid #555;
+      border-radius: 4px;
+      cursor: pointer;
+      flex-shrink: 0;
+      position: relative;
+      transition: all 0.2s;
+    }
+
+    .task-item input[type="checkbox"]:checked {
+      background: #d4af37;
+      border-color: #d4af37;
+    }
+
+    .task-item input[type="checkbox"]:checked::after {
+      content: '✓';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #0d0d0d;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .task-item.completed .task-text {
+      text-decoration: line-through;
+      opacity: 0.5;
+    }
+
+    .task-text { flex: 1; font-size: 0.95rem; }
+
+    .task-badge {
+      font-size: 0.7rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      flex-shrink: 0;
+    }
+
+    .badge-aprendizaje   { background: #1a3a2a; color: #4ade80; }
+    .badge-procesamiento  { background: #1a2a3a; color: #60a5fa; }
+    .badge-implementacion { background: #3a2a1a; color: #fb923c; }
+    .badge-experimentacion{ background: #3a1a3a; color: #c084fc; }
+    .badge-output         { background: #3a3a1a; color: #facc15; }
+
+    /* ── Grid de núcleos ── */
+    .nucleos-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .nucleo-card {
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      border-radius: 10px;
+      padding: 1.5rem;
+      transition: border-color 0.3s;
+    }
+
+    .nucleo-card:hover {
+      border-color: #d4af3750;
+    }
+
+    .nucleo-header {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 1rem;
+    }
+
+    .nucleo-icon {
+      font-size: 1.5rem;
+    }
+
+    .nucleo-name {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #e8e8e8;
+    }
+
+    .materias-list {
+      list-style: none;
+      margin-bottom: 1.2rem;
+    }
+
+    .materias-list li {
+      padding: 0.35rem 0;
+      padding-left: 1rem;
+      position: relative;
+      color: #bbb;
+      font-size: 0.9rem;
+    }
+
+    .materias-list li::before {
+      content: '›';
+      position: absolute;
+      left: 0;
+      color: #d4af37;
+      font-weight: bold;
+    }
+
+    /* ── Flujo de aprendizaje ── */
+    .flow-label {
+      font-size: 0.75rem;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.5rem;
+    }
+
+    .learning-flow {
+      display: flex;
+      gap: 0.25rem;
+      flex-wrap: wrap;
+    }
+
+    .flow-step {
+      font-size: 0.7rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      background: #252525;
+      color: #666;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: 1px solid transparent;
+      user-select: none;
+    }
+
+    .flow-step:hover {
+      border-color: #444;
+    }
+
+    .flow-step.active {
+      background: #d4af3720;
+      color: #d4af37;
+      border-color: #d4af3750;
+    }
+
+    .flow-step.done {
+      background: #1a3a2a;
+      color: #4ade80;
+      border-color: #4ade8030;
+    }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding-top: 1.5rem;
+      border-top: 1px solid #2a2a2a;
+      color: #555;
+      font-size: 0.85rem;
+    }
+
+    footer span {
+      color: #c9a84c;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 700px) {
+      header h1 { font-size: 1.8rem; }
+      .nucleos-grid { grid-template-columns: 1fr; }
+      .task-badge { display: none; }
+      .container { padding: 1.2rem 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- Header -->
+    <header>
+      <h1>Universidad Personal</h1>
+      <div class="date" id="currentDate"></div>
+      <div class="tagline">Si no se aplica o no se convierte en contenido, no cuenta como aprendizaje.</div>
+    </header>
+
+    <!-- Cita motivacional -->
+    <div class="quote-banner">
+      <p id="quoteText"></p>
+      <div class="quote-author" id="quoteAuthor"></div>
+    </div>
+
+    <!-- Tareas del día -->
+    <div class="tasks-section">
+      <div class="section-title">📋 Tareas del Día</div>
+      <div id="taskList">
+        <div class="task-item" data-task="0">
+          <input type="checkbox" />
+          <span class="task-text">Leer capítulo 3: Sistemas de hábitos atómicos</span>
+          <span class="task-badge badge-aprendizaje">Aprendizaje</span>
+        </div>
+        <div class="task-item" data-task="1">
+          <input type="checkbox" />
+          <span class="task-text">Resumen del video sobre política monetaria en África</span>
+          <span class="task-badge badge-procesamiento">Procesamiento</span>
+        </div>
+        <div class="task-item" data-task="2">
+          <input type="checkbox" />
+          <span class="task-text">Configurar automatización de calendario con IA</span>
+          <span class="task-badge badge-implementacion">Implementación</span>
+        </div>
+        <div class="task-item" data-task="3">
+          <input type="checkbox" />
+          <span class="task-text">Probar nueva rutina matutina ADHD-friendly</span>
+          <span class="task-badge badge-experimentacion">Experimentación</span>
+        </div>
+        <div class="task-item" data-task="4">
+          <input type="checkbox" />
+          <span class="task-text">Grabar reel sobre finanzas personales para creadores</span>
+          <span class="task-badge badge-output">Output</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Núcleos -->
+    <div class="section-title">🎓 Núcleos de Aprendizaje</div>
+    <div class="nucleos-grid">
+
+      <!-- Núcleo Mental -->
+      <div class="nucleo-card" data-nucleo="mental">
+        <div class="nucleo-header">
+          <span class="nucleo-icon">🧠</span>
+          <span class="nucleo-name">Núcleo Mental</span>
+        </div>
+        <ul class="materias-list">
+          <li>ADHD y Productividad</li>
+          <li>Psicología Aplicada</li>
+          <li>Hábitos y Sistemas</li>
+        </ul>
+        <div class="flow-label">Flujo de aprendizaje</div>
+        <div class="learning-flow">
+          <span class="flow-step" data-step="0">Lectura</span>
+          <span class="flow-step" data-step="1">Research</span>
+          <span class="flow-step" data-step="2">Procesamiento</span>
+          <span class="flow-step" data-step="3">Implementación</span>
+          <span class="flow-step" data-step="4">Explicación</span>
+        </div>
+      </div>
+
+      <!-- Núcleo Económico -->
+      <div class="nucleo-card" data-nucleo="economico">
+        <div class="nucleo-header">
+          <span class="nucleo-icon">💰</span>
+          <span class="nucleo-name">Núcleo Económico</span>
+        </div>
+        <ul class="materias-list">
+          <li>Finanzas</li>
+          <li>Economía</li>
+        </ul>
+        <div class="flow-label">Flujo de aprendizaje</div>
+        <div class="learning-flow">
+          <span class="flow-step" data-step="0">Lectura</span>
+          <span class="flow-step" data-step="1">Research</span>
+          <span class="flow-step" data-step="2">Procesamiento</span>
+          <span class="flow-step" data-step="3">Implementación</span>
+          <span class="flow-step" data-step="4">Explicación</span>
+        </div>
+      </div>
+
+      <!-- Núcleo Estratégico -->
+      <div class="nucleo-card" data-nucleo="estrategico">
+        <div class="nucleo-header">
+          <span class="nucleo-icon">🌍</span>
+          <span class="nucleo-name">Núcleo Estratégico</span>
+        </div>
+        <ul class="materias-list">
+          <li>Historia de África</li>
+          <li>Geopolítica Africana e Internacional</li>
+        </ul>
+        <div class="flow-label">Flujo de aprendizaje</div>
+        <div class="learning-flow">
+          <span class="flow-step" data-step="0">Lectura</span>
+          <span class="flow-step" data-step="1">Research</span>
+          <span class="flow-step" data-step="2">Procesamiento</span>
+          <span class="flow-step" data-step="3">Implementación</span>
+          <span class="flow-step" data-step="4">Explicación</span>
+        </div>
+      </div>
+
+      <!-- Núcleo Tecnológico -->
+      <div class="nucleo-card" data-nucleo="tecnologico">
+        <div class="nucleo-header">
+          <span class="nucleo-icon">🤖</span>
+          <span class="nucleo-name">Núcleo Tecnológico</span>
+        </div>
+        <ul class="materias-list">
+          <li>Inteligencia Artificial</li>
+          <li>Automatización</li>
+        </ul>
+        <div class="flow-label">Flujo de aprendizaje</div>
+        <div class="learning-flow">
+          <span class="flow-step" data-step="0">Lectura</span>
+          <span class="flow-step" data-step="1">Research</span>
+          <span class="flow-step" data-step="2">Procesamiento</span>
+          <span class="flow-step" data-step="3">Implementación</span>
+          <span class="flow-step" data-step="4">Explicación</span>
+        </div>
+      </div>
+
+      <!-- Núcleo Profesional -->
+      <div class="nucleo-card" data-nucleo="profesional">
+        <div class="nucleo-header">
+          <span class="nucleo-icon">💼</span>
+          <span class="nucleo-name">Núcleo Profesional</span>
+        </div>
+        <ul class="materias-list">
+          <li>Branding</li>
+          <li>Comunicación</li>
+          <li>Estrategia</li>
+        </ul>
+        <div class="flow-label">Flujo de aprendizaje</div>
+        <div class="learning-flow">
+          <span class="flow-step" data-step="0">Lectura</span>
+          <span class="flow-step" data-step="1">Research</span>
+          <span class="flow-step" data-step="2">Procesamiento</span>
+          <span class="flow-step" data-step="3">Implementación</span>
+          <span class="flow-step" data-step="4">Explicación</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <span>Si no se aplica o no se convierte en contenido, no cuenta como aprendizaje.</span>
+    </footer>
+
+  </div>
+
+  <script>
+    // ── Fecha actual ──
+    const dateEl = document.getElementById('currentDate');
+    const now = new Date();
+    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+    dateEl.textContent = now.toLocaleDateString('es-ES', options);
+
+    // ── Citas motivacionales ──
+    const quotes = [
+      { text: "La educación es el arma más poderosa que puedes usar para cambiar el mundo.", author: "Nelson Mandela" },
+      { text: "No expliques tu filosofía. Encárnala.", author: "Epicteto" },
+      { text: "El conocimiento no es poder. El conocimiento aplicado es poder.", author: "Dale Carnegie" },
+      { text: "Somos lo que hacemos repetidamente. La excelencia no es un acto, sino un hábito.", author: "Aristóteles" },
+      { text: "La mejor forma de predecir el futuro es creándolo.", author: "Peter Drucker" },
+      { text: "Un sistema es más fuerte que la motivación.", author: "James Clear" },
+      { text: "Haz lo difícil mientras sea fácil. Haz lo grande mientras sea pequeño.", author: "Lao Tzu" },
+      { text: "El autodidacta no tiene diploma, pero tiene resultados.", author: "Anónimo" },
+      { text: "Invierte en ti mismo. Tu carrera es el motor de tu riqueza.", author: "Warren Buffett" },
+      { text: "La disciplina es elegir entre lo que quieres ahora y lo que más quieres.", author: "Abraham Lincoln" },
+    ];
+
+    const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+    document.getElementById('quoteText').textContent = randomQuote.text;
+    document.getElementById('quoteAuthor').textContent = '— ' + randomQuote.author;
+
+    // ── Tareas: checkboxes con persistencia ──
+    const TASKS_KEY = 'uni_tasks_state';
+
+    function loadTaskState() {
+      try {
+        return JSON.parse(localStorage.getItem(TASKS_KEY)) || {};
+      } catch { return {}; }
+    }
+
+    function saveTaskState(state) {
+      localStorage.setItem(TASKS_KEY, JSON.stringify(state));
+    }
+
+    function initTasks() {
+      const state = loadTaskState();
+      document.querySelectorAll('.task-item').forEach(item => {
+        const id = item.dataset.task;
+        const checkbox = item.querySelector('input[type="checkbox"]');
+
+        if (state[id]) {
+          checkbox.checked = true;
+          item.classList.add('completed');
+        }
+
+        checkbox.addEventListener('change', () => {
+          const s = loadTaskState();
+          s[id] = checkbox.checked;
+          saveTaskState(s);
+          item.classList.toggle('completed', checkbox.checked);
+        });
+      });
+    }
+
+    initTasks();
+
+    // ── Flujo de aprendizaje con persistencia ──
+    const FLOW_KEY = 'uni_flow_state';
+
+    function loadFlowState() {
+      try {
+        return JSON.parse(localStorage.getItem(FLOW_KEY)) || {};
+      } catch { return {}; }
+    }
+
+    function saveFlowState(state) {
+      localStorage.setItem(FLOW_KEY, JSON.stringify(state));
+    }
+
+    function initFlows() {
+      const state = loadFlowState();
+
+      document.querySelectorAll('.nucleo-card').forEach(card => {
+        const nucleo = card.dataset.nucleo;
+        const steps = card.querySelectorAll('.flow-step');
+        const activeStep = state[nucleo] ?? -1;
+
+        steps.forEach(step => {
+          const stepIdx = parseInt(step.dataset.step);
+
+          if (stepIdx < activeStep) step.classList.add('done');
+          else if (stepIdx === activeStep) step.classList.add('active');
+
+          step.addEventListener('click', () => {
+            const currentState = loadFlowState();
+            const current = currentState[nucleo] ?? -1;
+            const clicked = parseInt(step.dataset.step);
+
+            // Toggle: si haces clic en el activo, retrocede; sino avanza al clickeado
+            const newActive = clicked === current ? clicked - 1 : clicked;
+            currentState[nucleo] = newActive;
+            saveFlowState(currentState);
+
+            // Actualizar visual
+            steps.forEach(s => {
+              const idx = parseInt(s.dataset.step);
+              s.classList.remove('active', 'done');
+              if (idx < newActive) s.classList.add('done');
+              else if (idx === newActive) s.classList.add('active');
+            });
+          });
+        });
+      });
+    }
+
+    initFlows();
+  </script>
+</body>
+</html>
